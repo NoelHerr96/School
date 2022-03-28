@@ -14,14 +14,15 @@ def prime_check(n):
     return True
 
 
-while True:
-    n+=1
-    prime_check(n)
+# while True:
+#     n+=1
+#     prime_check(n)
 
-    if len(prime_list) == 50:
-        print(prime_list)
-        break
+#     if len(prime_list) == 50:
+#         print(prime_list)
+#         break
 
 
-# print("true") if prime_check(11) else print("false")
-# print("true") if prime_check(14) else print("false")
+
+print("true") if prime_check(11) else print("false")
+print("true") if prime_check(14) else print("false")
