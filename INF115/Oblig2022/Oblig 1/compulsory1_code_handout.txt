@@ -1,0 +1,205 @@
+Task 1)
+CREATE TABLE film
+(
+  film_id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(40),
+  director VARCHAR(40),  
+  genre VARCHAR(20),
+  country VARCHAR(20),
+  duration TIME
+);
+
+CREATE TABLE volunteer
+(
+  volunteer_id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(40),
+  position VARCHAR(20),  
+  age SMALLINT
+);
+
+-- Films
+INSERT INTO film VALUES (1, "La Notte", "Michelangelo Antonioni", "Drama", "Italy", "02:02:22");
+INSERT INTO film VALUES (2, "Daisies", "Vera Chytilova", "Comedy", "Czech Republic", "01:16:52");
+INSERT INTO film VALUES (3, "Heat", "Michael Mann", "Thriller", "USA", "02:50:04");
+INSERT INTO film VALUES (4, "35 Shots of Rhum", "Claire Denis", "Drama", "France", "01:40:24");
+INSERT INTO film VALUES (5, "Edvard Munch", "Peter Watkins", "Drama", "Norway", "03:04:28");
+INSERT INTO film VALUES (6, "Where is the Friends House?", "Abbas Kiarostami", "Drama", "Iran", "01:23:47");
+INSERT INTO film VALUES (7, "Inland Empire", "David Lynch", "Horror", "USA", "03:00:12");
+INSERT INTO film VALUES (8, "You Were Never Really Here", "Lynne Ramsay", "Thriller", "USA", "01:33:47");
+INSERT INTO film VALUES (9, "Le Samouraï", "Herman Melville", "Thriller", "France", "01:45:40");
+INSERT INTO film VALUES (10, "A New Leaf", "Elaine May", "Comedy", "USA", "02:42:54");
+INSERT INTO film VALUES (11, "Suspiria", "Dario Argento", "Horror", "Italy", "01:39:49");
+INSERT INTO film VALUES (12, "PlayTime", "Jacques Tati", "Comedy", "France", "01:55:33");
+INSERT INTO film VALUES (13, "I'm a Cheerleader", "Jamie Babbit", "Comedy", "USA", "01:25:20");
+INSERT INTO film VALUES (14, "Wanda", "Barbara Loden", "Drama", "USA", "01:43:19");
+INSERT INTO film VALUES (15, "Fish Tank", "Andrea Arnold", "Drama", "UK", "02:03:52");
+INSERT INTO film VALUES (16, "Eyes Without a Face", "Georges Franju", "Horror", "France", "01:24:13");
+INSERT INTO film VALUES (17, "The Cremator", "Juraj Herz", "Horror", "Czech Republic", "01:40:37");
+INSERT INTO film VALUES (18, "Thelma", "Joachim Trier", "Drama", "Norway", "01:56:48");
+INSERT INTO film VALUES (19, "The Wages of Fear", "Henri-Georges Clouzot", "Thriller", "France", "02:33:31");
+INSERT INTO film VALUES (20, "A Girl Walks Home Alone at Night", "Ana Lily Amirpour", "Horror", "Iran", "01:39:04");
+INSERT INTO film VALUES (21, "To Live and Die in L.A.", "William Friedkin", "Thriller", "USA", "01:56:40");
+INSERT INTO film VALUES (22, "Amarcord", "Federico Fellini", "Drama", "Italy", "02:03:09");
+INSERT INTO film VALUES (23, "The Innocents", "Jack Clayton", "Horror", "UK", "01:40:15");
+INSERT INTO film VALUES (24, "The Ascent", "Larisa Shepitko", "Drama", "Russia", "01:51:30");
+INSERT INTO film VALUES (25, "Eraserhead", "David Lynch", "Horror", "USA", "01:29:23");
+
+-- Volunteers
+INSERT INTO volunteer VALUES (1, "Falke Meyer", "Shift Leader", 26);
+INSERT INTO volunteer VALUES (2, "Josef Hansen", "Shift Leader", 47);
+INSERT INTO volunteer VALUES (3, "Dina Sørensen", "Shift Leader", 28);
+INSERT INTO volunteer VALUES (4, "Victoria Souza", "Shift Leader", 23);
+INSERT INTO volunteer VALUES (5, "Knut Morken", "Janitor", 32);
+INSERT INTO volunteer VALUES (6, "Aslaug Flerhaug", "Information Host", 18);
+INSERT INTO volunteer VALUES (7, "Paul Flint", "Information Host", 45);
+
+Task 3 and 4)
+CREATE TABLE ticket
+(
+  ticket_id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR (40),
+  screening_id INT,
+  ticket_price SMALLINT,
+  FOREIGN KEY (screening_id) REFERENCES screening (screening_id)
+);
+
+CREATE TABLE volunteer_at_screening
+(
+  screening_id INT,
+  volunteer_id INT,
+  FOREIGN KEY (volunteer_id) REFERENCES volunteer (volunteer_id),
+  FOREIGN KEY (screening_id) REFERENCES screening (screening_id),
+  PRIMARY KEY (volunteer_id, screening_id)
+);
+
+-- Volunteer at Screening
+INSERT INTO volunteer_at_screening VALUES (1, 1);
+INSERT INTO volunteer_at_screening VALUES (2, 2);
+INSERT INTO volunteer_at_screening VALUES (3, 3);
+INSERT INTO volunteer_at_screening VALUES (4, 4);
+INSERT INTO volunteer_at_screening VALUES (5, 5);
+INSERT INTO volunteer_at_screening VALUES (6, 6);
+INSERT INTO volunteer_at_screening VALUES (7, 7);
+INSERT INTO volunteer_at_screening VALUES (8, 1);
+INSERT INTO volunteer_at_screening VALUES (9, 2);
+INSERT INTO volunteer_at_screening VALUES (10, 3);
+INSERT INTO volunteer_at_screening VALUES (11, 4);
+INSERT INTO volunteer_at_screening VALUES (12, 5);
+INSERT INTO volunteer_at_screening VALUES (13, 6);
+INSERT INTO volunteer_at_screening VALUES (14, 7);
+INSERT INTO volunteer_at_screening VALUES (15, 1);
+INSERT INTO volunteer_at_screening VALUES (16, 2);
+INSERT INTO volunteer_at_screening VALUES (17, 3);
+INSERT INTO volunteer_at_screening VALUES (18, 4);
+INSERT INTO volunteer_at_screening VALUES (19, 5);
+INSERT INTO volunteer_at_screening VALUES (20, 6);
+INSERT INTO volunteer_at_screening VALUES (21, 7);
+INSERT INTO volunteer_at_screening VALUES (22, 1);
+INSERT INTO volunteer_at_screening VALUES (23, 2);
+INSERT INTO volunteer_at_screening VALUES (24, 3);
+INSERT INTO volunteer_at_screening VALUES (25, 4);
+
+-- Tickets
+INSERT INTO ticket VALUES (1, "James Granly", 17, 80);
+INSERT INTO ticket VALUES (2, "Josefine Hovde", 23, 120);
+INSERT INTO ticket VALUES (3, "Stig Hansen", 22, 105);
+INSERT INTO ticket VALUES (4, "Ellen Lunde", 12, 85);
+INSERT INTO ticket VALUES (5, "Stephanie Ness", 13, 115);
+INSERT INTO ticket VALUES (6, "Linda Tveter", 13, 115);
+INSERT INTO ticket VALUES (7, "Steinar Nordås", 24, 120);
+INSERT INTO ticket VALUES (8, "Ida Pedersen", 10, 100);
+INSERT INTO ticket VALUES (9, "Arild Andresen", 22, 105);
+INSERT INTO ticket VALUES (10, "Jan Sund", 1, 100);
+INSERT INTO ticket VALUES (11, "Jane Stølen", 12, 85);
+INSERT INTO ticket VALUES (12, "Noah Brustad", 20, 90);
+INSERT INTO ticket VALUES (13, "Steinar Nordås", 4, 95);
+INSERT INTO ticket VALUES (14, "Andreas Lovli", 15, 130);
+INSERT INTO ticket VALUES (15, "Henrikke Ingebrigtsen", 8, 80);
+INSERT INTO ticket VALUES (16, "John Andreassen", 6, 60);
+INSERT INTO ticket VALUES (17, "Jofrid Sørensen", 11, 130);
+INSERT INTO ticket VALUES (18, "Tomine Fagermo", 22, 105);
+INSERT INTO ticket VALUES (19, "Lars Iversen", 23, 120);
+INSERT INTO ticket VALUES (20, "Jan Sund", 20, 90);
+INSERT INTO ticket VALUES (21, "Åse Mikalsen", 15, 130);
+INSERT INTO ticket VALUES (22, "Bjørg Gundersen", 20, 90);
+INSERT INTO ticket VALUES (23, "Odd Forsmo", 9, 140);
+INSERT INTO ticket VALUES (24, "Noah Brustad", 7, 150);
+INSERT INTO ticket VALUES (25, "Noah Brustad", 18, 80);
+INSERT INTO ticket VALUES (26, "Susanne Bekkevold", 3, 190);
+INSERT INTO ticket VALUES (27, "Ragna Bergo", 21, 100);
+INSERT INTO ticket VALUES (28, "Arild Andresen", 17, 80);
+INSERT INTO ticket VALUES (29, "Steinar Nordås", 20, 90);
+INSERT INTO ticket VALUES (30, "Susanne Bekkevold", 19, 120);
+INSERT INTO ticket VALUES (31, "Stephanie Ness", 25, 160);
+INSERT INTO ticket VALUES (32, "Kristian Granli", 2, 50);
+INSERT INTO ticket VALUES (33, "Kristian Granli", 3, 190);
+INSERT INTO ticket VALUES (34, "James Granly", 14, 60);
+INSERT INTO ticket VALUES (35, "Henrikke Ingebrigtsen", 21, 100);
+INSERT INTO ticket VALUES (36, "Josefine Hovde", 20, 90);
+INSERT INTO ticket VALUES (37, "Kjell Heiberg", 2, 50);
+INSERT INTO ticket VALUES (38, "James Granly", 22, 105);
+INSERT INTO ticket VALUES (39, "Ragna Bergo", 1, 100);
+INSERT INTO ticket VALUES (40, "Arild Andresen", 21, 100);
+INSERT INTO ticket VALUES (41, "Erik Narum", 7, 150);
+INSERT INTO ticket VALUES (42, "Oda Nesland", 7, 150);
+INSERT INTO ticket VALUES (43, "Stephanie Ness", 4, 95);
+INSERT INTO ticket VALUES (44, "Susanne Bekkevold", 10, 100);
+INSERT INTO ticket VALUES (45, "Kristian Granli", 7, 150);
+INSERT INTO ticket VALUES (46, "Harald Tvedt", 15, 130);
+INSERT INTO ticket VALUES (47, "Josefine Hovde", 24, 120);
+INSERT INTO ticket VALUES (48, "Hilde Justad", 19, 120);
+INSERT INTO ticket VALUES (49, "James Granly", 11, 130);
+INSERT INTO ticket VALUES (50, "Trond Nyborg", 1, 100);
+INSERT INTO ticket VALUES (51, "Susanne Bekkevold", 20, 90);
+INSERT INTO ticket VALUES (52, "Hilde Justad", 11, 130);
+INSERT INTO ticket VALUES (53, "Harald Tvedt", 14, 60);
+INSERT INTO ticket VALUES (54, "Hilde Justad", 19, 120);
+INSERT INTO ticket VALUES (55, "Åse Mikalsen", 8, 80);
+INSERT INTO ticket VALUES (56, "Oda Nesland", 18, 80);
+INSERT INTO ticket VALUES (57, "Arild Andresen", 2, 50);
+INSERT INTO ticket VALUES (58, "Ragna Bergo", 25, 160);
+INSERT INTO ticket VALUES (59, "Odd Forsmo", 18, 80);
+INSERT INTO ticket VALUES (60, "Jane Stølen", 24, 120);
+INSERT INTO ticket VALUES (61, "Ida Pedersen", 21, 100);
+INSERT INTO ticket VALUES (62, "Frode Vedvik", 10, 100);
+INSERT INTO ticket VALUES (63, "Frode Vedvik", 7, 150);
+INSERT INTO ticket VALUES (64, "Stephanie Ness", 20, 90);
+INSERT INTO ticket VALUES (65, "Åse Mikalsen", 6, 60);
+INSERT INTO ticket VALUES (66, "Joel Heim", 17, 80);
+INSERT INTO ticket VALUES (67, "Bjørg Gundersen", 17, 80);
+INSERT INTO ticket VALUES (68, "Joel Heim", 17, 80);
+INSERT INTO ticket VALUES (69, "Trond Nyborg", 6, 60);
+INSERT INTO ticket VALUES (70, "Noah Brustad", 25, 160);
+INSERT INTO ticket VALUES (71, "Harald Tvedt", 22, 105);
+INSERT INTO ticket VALUES (72, "Silje Samuelsen", 2, 50);
+INSERT INTO ticket VALUES (73, "Silje Samuelsen", 24, 120);
+INSERT INTO ticket VALUES (74, "Harald Tvedt", 16, 70);
+INSERT INTO ticket VALUES (75, "Odd Forsmo", 23, 120);
+INSERT INTO ticket VALUES (76, "Ørnulf Danielsen", 24, 120);
+INSERT INTO ticket VALUES (77, "Ørnulf Danielsen", 19, 120);
+INSERT INTO ticket VALUES (78, "Silje Samuelsen", 15, 130);
+INSERT INTO ticket VALUES (79, "Joel Heim", 1, 100);
+INSERT INTO ticket VALUES (80, "Kjell Heiberg", 17, 80);
+INSERT INTO ticket VALUES (81, "Mariann Gjerdrum", 16, 70);
+INSERT INTO ticket VALUES (82, "Mariann Gjerdrum", 18, 80);
+INSERT INTO ticket VALUES (83, "Joel Heim", 25, 160);
+INSERT INTO ticket VALUES (84, "Mariann Gjerdrum", 21, 100);
+INSERT INTO ticket VALUES (85, "Jane Stølen", 24, 120);
+INSERT INTO ticket VALUES (86, "Silje Samuelsen", 12, 85);
+INSERT INTO ticket VALUES (87, "Hilde Justad", 24, 120);
+INSERT INTO ticket VALUES (88, "Mariann Gjerdrum", 18, 80);
+INSERT INTO ticket VALUES (89, "Kåre Holtan", 19, 120);
+INSERT INTO ticket VALUES (90, "Kåre Holtan", 21, 100);
+INSERT INTO ticket VALUES (91, "Kjell Heiberg", 9, 140);
+INSERT INTO ticket VALUES (92, "Marit Johannessen", 9, 140);
+INSERT INTO ticket VALUES (93, "Marit Johannessen", 3, 190);
+INSERT INTO ticket VALUES (94, "Silje Samuelsen", 23, 120);
+INSERT INTO ticket VALUES (95, "Ørnulf Danielsen", 5, 150);
+INSERT INTO ticket VALUES (96, "Ørnulf Danielsen", 2, 50);
+INSERT INTO ticket VALUES (97, "Kaja Ødegård", 6, 60);
+INSERT INTO ticket VALUES (98, "Tomine Fagermo", 11, 130);
+INSERT INTO ticket VALUES (99, "Jofrid Sørensen", 3, 190);
+INSERT INTO ticket VALUES (100, "Frode Vedvik", 7, 150);
+INSERT INTO ticket VALUES (101, "Andreas Lovli", 15, 130);
+INSERT INTO ticket VALUES (102, "Bjørg Gundersen", 18, 80);
+INSERT INTO ticket VALUES (103, "Lars Iversen", 9, 140);
