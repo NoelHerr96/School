@@ -62,13 +62,15 @@ for i in range(1, 32):
 #OFB - Output feedback mode
 
 #print(encrypt([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]))
-def plaintext_reader():
-    with open("gold_plaintext.in", mode='r') as file:
-        for line in file:
-            output = file.readlines(4)
-            return output
 
-print(plaintext_reader())
+# Read the file and outputs in binary
+def plaintext_reader():
+    with open("gold_plaintext.in", mode='rb') as file:
+        while (byte := file.read(4)):
+            print(byte, len(byte))
+        
+
+plaintext_reader()
 
 
 
