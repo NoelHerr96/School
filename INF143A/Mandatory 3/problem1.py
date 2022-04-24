@@ -33,8 +33,8 @@ def ECB_mode():
     text_blocks = []
     ECB = []
     # Read the file and outputs in binary
-    with open("gold_plaintext.in", mode='r') as file:
-        while (byte := file.read(4)):
+    with open("gold_plaintext.in", mode='rb') as file:
+        while (byte := file.read()):
             text_blocks.append(str(byte))
     
     # https://stackoverflow.com/questions/30712020/typeerror-encoding-or-errors-without-a-string-argument
