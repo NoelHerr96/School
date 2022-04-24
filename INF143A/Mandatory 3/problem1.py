@@ -1,4 +1,5 @@
 import block as blk
+
 """
 TO DO:
 1) Split the plaintext in gold.plaintext.in into 32 bit sizes, if less than 32 pad the rest with 0s
@@ -6,8 +7,6 @@ TO DO:
 *) Implement CBC
 *) Implement OFB
 """
-
-BLOCK_SIZE = 32
 
 # Making 32-bit IV-block
 # iv = [1]
@@ -28,37 +27,51 @@ for i in range(1, 32):
 
 #print(f"key: {key}, Len: {len(key)}")
 
-#ECB - Electronic codebook mode
-def ECB_mode():
+def bitfile_reader():
     text_blocks = []
-    ECB = []
+    placeholder = []
     # Read the file and outputs in binary
     with open("gold_plaintext.in", mode='r') as file:
-        while (byte := file.read(4)):
-            text_blocks.append(str(byte))
+        while (byte := file.read()):
+            text_blocks.append(byte)
     
     # https://stackoverflow.com/questions/30712020/typeerror-encoding-or-errors-without-a-string-argument
     for items in text_blocks:
         binary_converted = ' '.join(format(ord(c), 'b') for c in items)
-        ECB.append(binary_converted)
-    print(ECB)
-
-
-    # for blocks in text_blocks:
-    #     print(blocks)
-        # assert len(blocks) == 32
-        # assert len(key) == 32
-        # encrypt = blk.xor(blk.gold(key), blocks)
-        # ECB.append(encrypt)
-
-    return ECB
+        placeholder = (binary_converted.replace(" ", ""))
         
+    return placeholder
 
+
+
+#ECB - Electronic codebook mode
+# def ECB_mode(input):
+#     # binary_lists = [input[x:x+32] for x in range(0, len(input), 32)]
+#     ECB = []
+
+#     # Adding commas
+#     for i in input:
+#         temp = []
+#         for j in i:
+#             j.split(',')
+#             ECB.append(j)
+
+#     # Splitting the list into 32 length chunks
+#     output=[ECB[i:i + 32] for i in range(0, len(ECB), 32)]
+    
+
+    # ECB_solved = []
+    # for blocks in output:
+    #     encrypt = blk.xor(blk.gold(key), blocks)
+    #     ECB_solved.append(encrypt)
+
+
+        
 
 
 #CBC - Cipherblock chaining mode
 
 #OFB - Output feedback mode
 
-        
-ECB_mode()
+print(bitfile_reader())
+    
