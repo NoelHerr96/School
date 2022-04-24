@@ -9,12 +9,12 @@ TO DO:
 """
 
 # Making 32-bit IV-block
-# iv = [1]
-# for i in range(1, 32):
-#    if iv[i - 1] == 0:
-#        iv.append(1)
-#    else:
-#        iv.append(0)
+iv = [1]
+for i in range(1, 32):
+   if iv[i - 1] == 0:
+       iv.append(1)
+   else:
+       iv.append(0)
 
 
 # Making 32-bit K that alternates 0s and 1s
@@ -44,34 +44,43 @@ def bitfile_reader():
 
 
 
-#ECB - Electronic codebook mode
-# def ECB_mode(input):
-#     # binary_lists = [input[x:x+32] for x in range(0, len(input), 32)]
-#     ECB = []
+# ECB - Electronic codebook mode
+def ECB_mode(input):
+    # binary_lists = [input[x:x+32] for x in range(0, len(input), 32)]
+    ECB = []
 
-#     # Adding commas
-#     for i in input:
-#         temp = []
-#         for j in i:
-#             j.split(',')
-#             ECB.append(j)
+    # Adding commas
+    for i in input:
+        temp = []
+        for j in i:
+            ECB.append(int(j))
 
-#     # Splitting the list into 32 length chunks
-#     output=[ECB[i:i + 32] for i in range(0, len(ECB), 32)]
+    # Splitting the list into 32 length chunks
+    output=[ECB[i:i + 32] for i in range(0, len(ECB), 32)]
     
-
-    # ECB_solved = []
-    # for blocks in output:
-    #     encrypt = blk.xor(blk.gold(key), blocks)
-    #     ECB_solved.append(encrypt)
-
+    
+    ECB_solved = []
+    for blocks in output:
+        while len(blocks) < 32:
+            blocks.append(0)
+        encrypt = blk.xor(blk.gold(key), blocks)
+        ECB_solved.append(encrypt)
+    return ECB_solved
 
         
-
+print(ECB_mode(bitfile_reader()))
 
 #CBC - Cipherblock chaining mode
+"""
+Process:
+1) Message 1 XOR with IV(initialisastion vector), you get Ciphertext 1
+2) Use Ciphertext 1 and XOR with Message 2, you get ciphertext 2
+3) Same procedure as step 2, but XOR ciptertext 2 with message 3
+"""
+def CBC_mode():
+    return True
 
 #OFB - Output feedback mode
 
-print(bitfile_reader())
+# print(bitfile_reader())
     
