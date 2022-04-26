@@ -26,6 +26,10 @@ for i in range(1, 32):
     else:
         key.append(0)
 
+# Nikolay's key 
+nik_key = [1]*32
+
+
 
 def bitfile_reader():
     text_blocks = []
@@ -58,10 +62,9 @@ def bitfile_reader():
 def ECB_mode(input):
     ECB_encrypted = []
     for blocks in input:
-        encrypt = blk.xor(blk.gold(key), blocks)
+        encrypt = blk.encrypt(key, blocks)
         ECB_encrypted.append(encrypt)
     return ECB_encrypted
-
 
         
 #CBC - Cipherblock chaining mode
@@ -73,35 +76,51 @@ Process:
 4) repeat
 """
 def CBC_mode(input):
-    temp = []
     CBC_encrypted = []
-
+    
     n = 0
-
-    for i, element in enumerate(input):
-        #making ciphertext block nr 1
-        if i == 0:
-            iv_step = blk.xor(element, iv)
-            first_block = blk.xor(blk.gold(iv_step), key)
+    for block1 in input:
+        # Making ciphertext 1
+        if n == 0:
+            iv_step = blk.xor(block1, iv)
+            # print(f'iv_step: {iv_step}')
+            first_block = blk.encrypt(iv_step, key)
             CBC_encrypted.append(first_block)
-        #making ciphertext block nr. 2
-        elif i == 1:
-            second_xor = blk.xor(element, first_block)
-            second_block = blk.xor(blk.gold(second_xor), key)
-            temp = element
-            CBC_encrypted.append(second_block)
-        #making ciphertext block n+1
+            n += 1
+        
+        else:
+            xor_step = blk.xor(block1, CBC_encrypted[-1])
+            # print(f'xor_step: {xor_step}')
+            cipherblock = blk.encrypt(xor_step, key)
+            CBC_encrypted.append(cipherblock)
 
-    for lists in CBC_encrypted:
-        xor_step = blk.xor(lists, temp)
-        next_block = blk.xor(blk.gold(xor_step), key)
-
-        CBC_encrypted.append(next_block)
+    # for x, element in enumerate(CBC_encrypted):
+    #     print(x, element)
     return CBC_encrypted
 
-print(CBC_mode(bitfile_reader()))
+# CBC_mode(bitfile_reader())
 
 #OFB - Output feedback mode
+"""
+1) IV and Key is encrpyted to get K1
+2) K1 is XOR'd with Plaintext block nr 1, you get Ciphertext 1 as an output
+3) Use Key and K1 is encrypted to get K2
+4) K2 is XOR'd with Plaintext block nr 2, you get Ciphertext 2 as an output
+5) Repeat step 3 but number increases by 1 for everything
+"""
+def OFB_mode(input):
+    OFB_encrypted = []
+    key_generate = []
 
-# print(bitfile_reader())
+    first_key = blk.encrypt(iv, key)
+    key_generate.append(first_key)
+
+    for block1 in input:
+        cipherblck = blk.xor(block1, key_generate[-1])
+        OFB_encrypted.append(cipherblck)
     
+    for x, element in enumerate(OFB_encrypted):
+        print(f'OFB: {x} {element}')
+
+        return OFB_encrypted
+
