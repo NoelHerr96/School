@@ -2,11 +2,7 @@ from os import remove
 import block as blk
 
 """
-TO DO:
-1) Split the plaintext in gold.plaintext.in into 32 bit sizes, if less than 32 pad the rest with 0s
-*) Implement ECB
-*) Implement CBC
-*) Implement OFB
+Code written by Noel Santillana Herrera
 """
 
 # Making 32-bit IV-block that consists of alternating 1s and 0s
@@ -62,9 +58,13 @@ def bitfile_reader():
 def ECB_mode(input):
     ECB_encrypted = []
     for blocks in input:
-        encrypt = blk.encrypt(key, blocks)
+        encrypt = blk.encrypt(blocks, key)
         ECB_encrypted.append(encrypt)
+
+    for x, element in enumerate(ECB_encrypted):
+        print(x, element)
     return ECB_encrypted
+
 
         
 #CBC - Cipherblock chaining mode
@@ -98,7 +98,7 @@ def CBC_mode(input):
     #     print(x, element)
     return CBC_encrypted
 
-# CBC_mode(bitfile_reader())
+
 
 #OFB - Output feedback mode
 """
@@ -122,5 +122,6 @@ def OFB_mode(input):
     for x, element in enumerate(OFB_encrypted):
         print(f'OFB: {x} {element}')
 
-        return OFB_encrypted
+    return OFB_encrypted
 
+OFB_mode(bitfile_reader())
