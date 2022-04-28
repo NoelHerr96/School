@@ -38,10 +38,6 @@ def bitfile_reader(B):
         bits.append(element)
     return bits
 
-<<<<<<< HEAD
-# bytes_to_bits(read_file("hash.out"))
-=======
->>>>>>> 76575e870c570ce96c1ddb15808c074147463cac
 
 def matyas_meyer_oseas(input):
 
@@ -63,13 +59,9 @@ def matyas_meyer_oseas(input):
             xor_step = blk.xor(encrypt_step, blocks)
             matyasmo.append(xor_step)
 
-    
-
 
     for x, element in enumerate(matyasmo):
         print(x, element)
 
 
     return matyasmo
-
-matyas_meyer_oseas(bitfile_reader())
