@@ -26,34 +26,6 @@ for i in range(1, 32):
 nik_key = [1]*32
 
 
-
-"""def bitfile_reader():
-    text_blocks = []
-    temp = []
-    final = []
-    # Read the file and outputs in binary
-    with open("gold_plaintext.in", mode='r') as file:
-        while (byte := file.read()):
-            text_blocks.append(byte)
-    
-    
-    for items in text_blocks:
-        binary_converted = ' '.join(format(ord(c), 'b') for c in items)
-        remove_spaces = (binary_converted.replace(" ", ""))
-        for j in remove_spaces:
-            temp.append(int(j))
-
-    # Splitting the list into 32-bit length chunks
-    chunks=[temp[i:i + 32] for i in range(0, len(temp), 32)]
-
-
-    for x, element in enumerate(chunks):
-        while len(element) < 32:
-            element.append(0)
-        final.append(element)
-    return final"""
-
-
 def read_file(input_file):
     f = open(input_file, "rb")
     data = f.read()
