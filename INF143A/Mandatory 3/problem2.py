@@ -1,7 +1,7 @@
 import block as blk
 
 """
-Written by Noel Santillana Herrera.
+Code written by Noel Santillana Herrera.
 Problem 2. Matyas-Meyer-Oseas
 1) Can use a vector of all 1s for the first round key h_0
 2) What is the output size of this hash function?
@@ -68,13 +68,14 @@ def bytes_to_bits(B):
 
     return bits
 
-bytes_to_bits(read_file("hash.out"))
+# bytes_to_bits(read_file("hash.out"))
 
 def matyas_meyer_oseas(input):
 
     test_key = [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1]
     first_rkey = [1] * 32
     matyasmo = []
+    keys = []
     n = 0
 
     for blocks in input:
@@ -92,10 +93,10 @@ def matyas_meyer_oseas(input):
     
 
 
-    # for x, element in enumerate(matyasmo):
-    #     print(x, element)
+    for x, element in enumerate(matyasmo):
+        print(x, element)
 
 
     return matyasmo
 
-# matyas_meyer_oseas(bitfile_reader())
+matyas_meyer_oseas(bitfile_reader())
