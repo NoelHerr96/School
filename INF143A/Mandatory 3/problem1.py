@@ -27,7 +27,7 @@ nik_key = [1]*32
 
 
 
-def bitfile_reader():
+"""def bitfile_reader():
     text_blocks = []
     temp = []
     final = []
@@ -51,22 +51,54 @@ def bitfile_reader():
         while len(element) < 32:
             element.append(0)
         final.append(element)
-    return final
+    return final"""
+
+
+def read_file(input_file):
+    f = open(input_file, "rb")
+    data = f.read()
+    f.close()
+
+    return data
+
+def bitfile_reader(B):
+    temp = []
+    bits = []
+    for i in range(len(B)):
+        current_byte = B[i]
+        mask = 128
+        for j in range(8):
+            if (current_byte >= mask):
+                temp.append(1)
+                current_byte -= mask
+            else:
+                temp.append(0)
+            mask = mask // 2
+
+    chunks=[temp[i:i + 32] for i in range(0, len(temp), 32)]
+    
+    for x, element in enumerate(chunks):
+        while len(element) < 32:
+            element.append(0)
+        bits.append(element)
+    return bits
+
 
 
 # ECB - Electronic codebook mode
 def ECB_mode(input):
     ECB_encrypted = []
     for blocks in input:
-        encrypt = blk.encrypt(blocks, key)
+        encrypt = blk.encrypt(key, blocks)
         ECB_encrypted.append(encrypt)
 
     for x, element in enumerate(ECB_encrypted):
         print(x, element)
+        
     return ECB_encrypted
 
+# ECB_mode(bitfile_reader(read_file("output.ecb")))
 
-        
 #CBC - Cipherblock chaining mode
 """
 Process:
@@ -123,5 +155,3 @@ def OFB_mode(input):
         print(f'OFB: {x} {element}')
 
     return OFB_encrypted
-
-OFB_mode(bitfile_reader())
