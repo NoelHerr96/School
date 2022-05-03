@@ -12,6 +12,8 @@ for i in range(1, 32):
    else:
        iv.append(0)
 
+nik_iv = [1] * 32
+
 # Making 32-bit K that alternates 0s and 1s
 key = [0]
 for i in range(1, 32):
@@ -24,18 +26,15 @@ for i in range(1, 32):
 nik_key = [1]*32
 
 
-def read_file(input_file):
-    f = open(input_file, "rb")
-    data = f.read()
-    f.close()
 
-    return data
+def bitfile_reader(input_file):
+    with open(input_file, 'rb') as f:
+        data = f.read()
 
-def bitfile_reader(B):
     temp = []
     bits = []
-    for i in range(len(B)):
-        current_byte = B[i]
+    for i in range(len(data)):
+        current_byte = data[i]
         mask = 128
         for j in range(8):
             if (current_byte >= mask):
@@ -84,16 +83,16 @@ def CBC_mode(input):
     for block1 in input:
         # Making ciphertext 1
         if n == 0:
-            iv_step = blk.xor(block1, iv)
+            iv_step = blk.xor(block1, nik_iv)
             # print(f'iv_step: {iv_step}')
-            first_block = blk.encrypt(iv_step, key)
+            first_block = blk.encrypt(iv_step, nik_key)
             CBC_encrypted.append(first_block)
             n += 1
         
         else:
             xor_step = blk.xor(block1, CBC_encrypted[-1])
             # print(f'xor_step: {xor_step}')
-            cipherblock = blk.encrypt(xor_step, key)
+            cipherblock = blk.encrypt(xor_step, nik_key)
             CBC_encrypted.append(cipherblock)
 
     for x, element in enumerate(CBC_encrypted):
@@ -111,19 +110,28 @@ def CBC_mode(input):
 5) Repeat step 3 but number increases by 1 for everything
 """
 def OFB_mode(input):
-    OFB_encrypted = []
-    key_generate = []
+    OFB_cipher = []
+    key_generated = []
 
-    first_key = blk.encrypt(iv, key)
-    key_generate.append(first_key)
+    n = 0
+    for message in input:
+        if n == 0:
+            first_key = blk.encrypt(nik_iv,nik_key)
+            key_generated.append(first_key)
+            first_cipher = blk.xor(message, key_generated[-1])
+            OFB_cipher.append(first_cipher)
+            n += 1
+        else:
+            key_step = blk.encrypt(key_generated[-1], nik_key)
+            key_generated.append(key_step)
+            cipherblock = blk.xor(message, key_step)
+            OFB_cipher.append(cipherblock)
 
-    for block1 in input:
-        cipherblck = blk.xor(block1, key_generate[-1])
-        OFB_encrypted.append(cipherblck)
-    
-    for x, element in enumerate(OFB_encrypted):
+    for x, element in enumerate(OFB_cipher):
         print(f'OFB: {x} {element}')
 
-    return OFB_encrypted
+    return OFB_cipher
 
-CBC_mode(bitfile_reader(read_file("gold_plaintext.in")))
+OFB_mode(bitfile_reader("gold_plaintext.in"))
+
+# print(bitfile_reader("output.ofb"))
