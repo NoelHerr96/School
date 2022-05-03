@@ -1,4 +1,3 @@
-from os import remove
 import block as blk
 
 """
@@ -12,7 +11,6 @@ for i in range(1, 32):
        iv.append(1)
    else:
        iv.append(0)
-
 
 # Making 32-bit K that alternates 0s and 1s
 key = [0]
@@ -98,8 +96,8 @@ def CBC_mode(input):
             cipherblock = blk.encrypt(xor_step, key)
             CBC_encrypted.append(cipherblock)
 
-    # for x, element in enumerate(CBC_encrypted):
-    #     print(x, element)
+    for x, element in enumerate(CBC_encrypted):
+        print(x, element)
     return CBC_encrypted
 
 
@@ -127,3 +125,5 @@ def OFB_mode(input):
         print(f'OFB: {x} {element}')
 
     return OFB_encrypted
+
+CBC_mode(bitfile_reader(read_file("gold_plaintext.in")))

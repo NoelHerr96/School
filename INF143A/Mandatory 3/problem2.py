@@ -17,6 +17,9 @@ def read_file(input_file):
     return data
 
 def bitfile_reader(B):
+    # with open (file, mode='rb') as file:
+    #     data = file.read()
+    
     temp = []
     bits = []
     for i in range(len(B)):
@@ -42,21 +45,21 @@ def bitfile_reader(B):
 def matyas_meyer_oseas(input):
 
     test_key = [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1]
-    first_rkey = [1] * 32
+    IV = [1] * 32
     matyasmo = []
     keys = []
     n = 0
 
-    for blocks in input:
+    for message in input:
         if n == 0:
-            first_encrypt = blk.encrypt(blocks, first_rkey)
-            first_xor = blk.xor(first_encrypt, blocks)
+            first_encrypt = blk.encrypt(message, IV)
+            first_xor = blk.xor(first_encrypt, message)
             matyasmo.append(first_xor)
             n += 1
         
         else:
-            encrypt_step = blk.encrypt(blocks, matyasmo[-1])
-            xor_step = blk.xor(encrypt_step, blocks)
+            encrypt_step = blk.encrypt(message, matyasmo[-1])
+            xor_step = blk.xor(encrypt_step, message)
             matyasmo.append(xor_step)
 
 
@@ -65,3 +68,7 @@ def matyas_meyer_oseas(input):
 
 
     return matyasmo
+
+# https://www.famnit.upr.si/sl/resources/files/knjiznica/studijsko-gradivo/epasalic-hashfunc-zbirka-nalog-2.pdf
+
+matyas_meyer_oseas(bitfile_reader(read_file("test.txt")))
