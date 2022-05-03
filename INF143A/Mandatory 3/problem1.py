@@ -2,6 +2,7 @@ import block as blk
 
 """
 Code written by Noel Santillana Herrera
+To get outputs, scroll to the bottom and remove their prints, and then simply run the code in an editor. 
 """
 
 # Making 32-bit IV-block that consists of alternating 1s and 0s
@@ -12,7 +13,6 @@ for i in range(1, 32):
    else:
        iv.append(0)
 
-nik_iv = [1] * 32
 
 # Making 32-bit K that alternates 0s and 1s
 key = [0]
@@ -22,9 +22,9 @@ for i in range(1, 32):
     else:
         key.append(0)
 
-# Nikolay's key 
+# Nikolay's key and IV for testing
 nik_key = [1]*32
-
+nik_iv = [1] * 32
 
 
 def bitfile_reader(input_file):
@@ -58,57 +58,41 @@ def bitfile_reader(input_file):
 def ECB_mode(input):
     ECB_encrypted = []
     for blocks in input:
-        encrypt = blk.encrypt(key, blocks)
+        encrypt = blk.encrypt(blocks, key)
         ECB_encrypted.append(encrypt)
 
     for x, element in enumerate(ECB_encrypted):
-        print(x, element)
+        print(f"{x}. Output for ECB {element}")
         
     return ECB_encrypted
 
-# ECB_mode(bitfile_reader(read_file("output.ecb")))
 
-#CBC - Cipherblock chaining mode
-"""
-Process:
-1) Message 1 XOR with IV(initialisastion vector), encrypt the xor'd with key, you get Ciphertext 1
-2) Use Ciphertext 1 and XOR with Message 2, encrypt the xor'd with the key, you get Ciphertext 2
-3) Same procedure as step 2, but XOR Ciptertext 2 with Message 3, encrypt the xor'd with key, 
-4) repeat
-"""
-def CBC_mode(input):
+# CBC - Cipherblock chaining mode
+def CBC_mode(bytes):
     CBC_encrypted = []
     
     n = 0
-    for block1 in input:
+    for message in bytes:
         # Making ciphertext 1
         if n == 0:
-            iv_step = blk.xor(block1, nik_iv)
-            # print(f'iv_step: {iv_step}')
-            first_block = blk.encrypt(iv_step, nik_key)
+            iv_step = blk.xor(message, iv)
+            first_block = blk.encrypt(iv_step, key)
             CBC_encrypted.append(first_block)
             n += 1
         
         else:
-            xor_step = blk.xor(block1, CBC_encrypted[-1])
-            # print(f'xor_step: {xor_step}')
-            cipherblock = blk.encrypt(xor_step, nik_key)
+            xor_step = blk.xor(message, CBC_encrypted[-1])
+            cipherblock = blk.encrypt(xor_step, key)
             CBC_encrypted.append(cipherblock)
-
+    
     for x, element in enumerate(CBC_encrypted):
-        print(x, element)
+        print(f"{x}. Output for CBC {element}")
+
+
     return CBC_encrypted
 
 
-
-#OFB - Output feedback mode
-"""
-1) IV and Key is encrpyted to get K1
-2) K1 is XOR'd with Plaintext block nr 1, you get Ciphertext 1 as an output
-3) Use Key and K1 is encrypted to get K2
-4) K2 is XOR'd with Plaintext block nr 2, you get Ciphertext 2 as an output
-5) Repeat step 3 but number increases by 1 for everything
-"""
+# OFB - Output feedback mode
 def OFB_mode(input):
     OFB_cipher = []
     key_generated = []
@@ -116,22 +100,24 @@ def OFB_mode(input):
     n = 0
     for message in input:
         if n == 0:
-            first_key = blk.encrypt(nik_iv,nik_key)
+            first_key = blk.encrypt(iv, key)
             key_generated.append(first_key)
-            first_cipher = blk.xor(message, key_generated[-1])
-            OFB_cipher.append(first_cipher)
+            first_cipherblock = blk.xor(message, key_generated[-1])
+            OFB_cipher.append(first_cipherblock)
             n += 1
         else:
-            key_step = blk.encrypt(key_generated[-1], nik_key)
+            key_step = blk.encrypt(key_generated[-1], key)
             key_generated.append(key_step)
             cipherblock = blk.xor(message, key_step)
             OFB_cipher.append(cipherblock)
 
+
     for x, element in enumerate(OFB_cipher):
-        print(f'OFB: {x} {element}')
+            print(f"{x}. Output for OFB {element}")
 
     return OFB_cipher
 
-OFB_mode(bitfile_reader("gold_plaintext.in"))
 
-# print(bitfile_reader("output.ofb"))
+#ECB_mode(bitfile_reader("gold_plaintext.in"))
+#CBC_mode(bitfile_reader("gold_plaintext.in"))
+#OFB_mode(bitfile_reader("gold_plaintext.in"))

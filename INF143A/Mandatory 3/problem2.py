@@ -3,27 +3,17 @@ import block as blk
 """
 Code written by Noel Santillana Herrera.
 Problem 2. Matyas-Meyer-Oseas
-1) Can use a vector of all 1s for the first round key h_0
-2) What is the output size of this hash function?
-3) How many hashes would an attacker have to compute in order to find a pair of inputs of the same hash(what would the so-called birthday attack be) 
-4) Hash the plaintext in gold plaintext.in using the resulting hash function.
+To get outputs, simply run the code in an editor. 
 """
 
-def read_file(input_file):
-    f = open(input_file, "rb")
-    data = f.read()
-    f.close()
+def bitfile_reader(input_file):
+    with open(input_file, 'rb') as f:
+        data = f.read()
 
-    return data
-
-def bitfile_reader(B):
-    # with open (file, mode='rb') as file:
-    #     data = file.read()
-    
     temp = []
     bits = []
-    for i in range(len(B)):
-        current_byte = B[i]
+    for i in range(len(data)):
+        current_byte = data[i]
         mask = 128
         for j in range(8):
             if (current_byte >= mask):
@@ -42,33 +32,31 @@ def bitfile_reader(B):
     return bits
 
 
-def matyas_meyer_oseas(input):
+def matyas_meyer_oseas(bits):
 
-    test_key = [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1]
-    IV = [1] * 32
+    IV = [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1]
+    first_iv = [1] * 32
     matyasmo = []
-    keys = []
-    n = 0
 
-    for message in input:
+    n = 0
+    for message in bits:
         if n == 0:
-            first_encrypt = blk.encrypt(message, IV)
-            first_xor = blk.xor(first_encrypt, message)
+            first_step = blk.encrypt(message, first_iv)
+            first_xor = blk.xor(first_step, message)
             matyasmo.append(first_xor)
             n += 1
-        
         else:
-            encrypt_step = blk.encrypt(message, matyasmo[-1])
-            xor_step = blk.xor(encrypt_step, message)
-            matyasmo.append(xor_step)
+            encryption = blk.encrypt(message, matyasmo[-1])
+            hash_generate = blk.xor(encryption, message)
+            matyasmo.append(hash_generate)
 
 
-    for x, element in enumerate(matyasmo):
-        print(x, element)
+    
+
+        return matyasmo
 
 
-    return matyasmo
+print(matyas_meyer_oseas(bitfile_reader("gold_plaintext.in")))
 
-# https://www.famnit.upr.si/sl/resources/files/knjiznica/studijsko-gradivo/epasalic-hashfunc-zbirka-nalog-2.pdf
-
-matyas_meyer_oseas(bitfile_reader(read_file("test.txt")))
+print("The output size of this hash function is 32-bits. The attacker would have to compute 2^32(~4,3 * 10^9) in order to find a pair of inputs with the same hash")
+print("Source for birthday attack taken from table from: ")
