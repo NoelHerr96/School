@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFA | Code</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <header>
+                <h1>Email Verification</h1>
+                <p>Enter the 4-digit verification code that was sent to your email. <span>admin@HSmail.ctf</span></p>
+            </header>
+            <form id="otp-form" method="POST" action="/verify-OTP">
+                <div class="input-container">
+                    <input type="text" maxlength="1" name="code-1" required>
+                    <input type="text" maxlength="1" name="code-2" required>
+                    <input type="text" maxlength="1" name="code-3" required>
+                    <input type="text" maxlength="1" name="code-4" required>
+                </div>
+                <button type="submit">Verify Account</button>
+            </form>
+            <div class="footer">
+                Not your email? <a href="/">Sign in</a>
+            </div>
+        </div>
+    </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('otp-form')
+    const inputs = [...form.querySelectorAll('input[type=text]')]
+    const submit = form.querySelector('button[type=submit]')
+
+    const handleKeyDown = (e) => {
+      if (
+        !/^[0-9]{1}$/.test(e.key)
+        && e.key !== 'Backspace'
+        && e.key !== 'Delete'
+        && e.key !== 'Tab'
+        && !e.metaKey
+      ) {
+        e.preventDefault()
+      }
+
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        const index = inputs.indexOf(e.target);
+        if (index > 0) {
+          inputs[index - 1].value = '';
+          inputs[index - 1].focus();
+        }
+      }
+    }
+
+    const handleInput = (e) => {
+      const { target } = e
+      const index = inputs.indexOf(target)
+      if (target.value) {
+        if (index < inputs.length - 1) {
+          inputs[index + 1].focus()
+        } else {
+          submit.focus()
+        }
+      }
+    }
+
+    const handleFocus = (e) => {
+      e.target.select()
+    }
+
+    const handlePaste = (e) => {
+      e.preventDefault()
+      const text = e.clipboardData.getData('text')
+      if (!new RegExp(`^[0-9]{${inputs.length}}$`).test(text)) {
+        return
+      }
+      const digits = text.split('')
+      inputs.forEach((input, index) => input.value = digits[index])
+      submit.focus()
+    }
+
+    inputs.forEach((input) => {
+      input.addEventListener('input', handleInput)
+      input.addEventListener('keydown', handleKeyDown)
+      input.addEventListener('focus', handleFocus)
+      input.addEventListener('paste', handlePaste)
+    });
+
+    function genToken() {
+      // Create a new XMLHttpRequest object
+      var xhr = new XMLHttpRequest();
+
+      // Configure it: POST-request for the URL /token
+      xhr.open('POST', '/generate-OTP', true);
+
+      // Set up a request header to indicate the type of content being sent
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+      // Handle the response
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          console.log('Success:', xhr.responseText);
+        } else {
+          console.error('Error:', xhr.statusText);
+        }
+      };
+
+      // Send the request
+      xhr.send();
+    }
+
+    genToken();
+  });
+</script>
+
+
+</body>

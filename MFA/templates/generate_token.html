@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Token</title>
+</head>
+<body>
+    <h1>Token Generated!</h1>
+    <p>Your generated 4-digit token is: {{ token }}</p>
+    <form action="{{ url_for('verify_token') }}" method="POST">
+        <input type="text" name="entered_token" placeholder="Enter your token" required>
+        <button type="submit">Verify Token</button>
+    </form>
+</body>
+</html>
